@@ -1,0 +1,21 @@
+spring:
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  data:
+    mongodb:
+      uri: mongodb+srv://admin:admin@cluster0.dlrlm.mongodb.net/TicketMaster
+      authentication-database: admin
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    username: admin
+    password: 123456
+    host: localhost
+    port: 5672
+    template:
+      default-receive-queue: ticketMaster
+      routing-key: ticketMaster
+      exchange: ticketMaster
+
+server:
+  port: 8081

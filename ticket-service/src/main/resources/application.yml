@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/TicketMaster
+    username: postgres
+    password: postgrepw
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
+    username: admin
+    password: 123456
+    host: localhost
+    port: 5672
+    template:
+      default-receive-queue: ticketMaster
+      routing-key: ticketMaster
+      exchange: ticketMaster
+
+server:
+  port: 8080
