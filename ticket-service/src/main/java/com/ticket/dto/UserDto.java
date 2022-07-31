@@ -1,5 +1,7 @@
 package com.ticket.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ticket.model.enums.Role;
 import com.ticket.model.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +23,6 @@ public class UserDto implements Serializable {
     private String phoneNumber;
     private List<TicketDto> tickets;
     private UserType userType;
+    private Role role;
+
 }

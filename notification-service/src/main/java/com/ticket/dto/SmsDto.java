@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class SmsDto extends NotificationDto implements Serializable {
     private String phoneNumber;
 
+    public SmsDto() {
+    }
 
     public SmsDto(String text, String phoneNumber) {
         super(text);

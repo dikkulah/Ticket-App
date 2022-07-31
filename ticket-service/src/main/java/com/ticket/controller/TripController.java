@@ -2,13 +2,15 @@ package com.ticket.controller;
 
 import com.ticket.dto.TripDto;
 import com.ticket.model.enums.Station;
-import com.ticket.model.enums.VehicleType;
+import com.ticket.model.enums.Vehicle;
 import com.ticket.service.TripService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -19,13 +21,15 @@ public class TripController {
 
     private final TripService tripService;
 
+
     @GetMapping
-    public ResponseEntity<List<TripDto>> getTripByPropertiesOrAll(@RequestParam(value = "vehicleType", required = false) VehicleType vehicleType
+    public ResponseEntity<List<TripDto>> getTripByPropertiesOrAll(@RequestParam(value = "vehicle", required = false) Vehicle vehicle
             , @RequestParam(value = "to", required = false) Station to
             , @RequestParam(value = "from", required = false) Station from
-            , @RequestParam(value = "arrivalTime", required = false) String arrivalTimeString
-            , @RequestParam(value = "departureTime", required = false) String departureTimeString) {
-        return tripService.getTripByPropertiesOrAll(vehicleType, to, from, arrivalTimeString, departureTimeString);
+            , @RequestParam(value = "arrivalTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrivalTime
+            , @RequestParam(value = "departureTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime) {
+
+        return tripService.getTripByPropertiesOrAll(vehicle, to, from, arrivalTime, departureTime);
     }
 
     @GetMapping("{id}")
@@ -39,9 +43,9 @@ public class TripController {
         return tripService.addTrip(request, email);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> cancelTrip(@PathVariable Long id) {
-        return tripService.cancelTrip(id);
+    @DeleteMapping("{tripId}")
+    public ResponseEntity<String> cancelTrip(@PathVariable Long tripId, String email) {
+        return tripService.cancelTrip(tripId, email);
     }
 
 

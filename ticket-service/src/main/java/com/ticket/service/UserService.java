@@ -54,4 +54,14 @@ public class UserService {
                 .map(ticket -> modelMapper.map(ticket, TicketDto.class)).toList());
     }
 
+    public ResponseEntity<UserDto> getByUserEmail(String email) {
+        User user= userRepository.findUserByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Böyle bir kullanıcı mevcut değil"));
+        return ResponseEntity.ok().body(modelMapper.map(user,UserDto.class));
+    }
+
+    public ResponseEntity<String> deleteByUserEmail(String email) {
+        User user= userRepository.findUserByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Böyle bir kullanıcı mevcut değil"));
+        userRepository.delete(user);
+        return ResponseEntity.ok().body(email+" kullanıcısı başarıyla silindi");
+    }
 }

@@ -1,10 +1,13 @@
 package com.ticket.controller;
 
+import com.ticket.dto.TicketDto;
 import com.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("ticket")
@@ -12,14 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TicketController {
     private final TicketService ticketService;
-    //todo satılan bilet sayısı ve toplam gelir admin yapar.
-    //TODO bireysel kullanıcılar aynı sefer için enfazla 5 bilet alabilir
-    //TODO Bireysel kullanıcı aynı sefer için 2 erkek bilet alabilir.
+    @GetMapping("totalAndCount/{email}")
+    public ResponseEntity<String> getTotalAndCounts(@PathVariable String email){
+        return ticketService.getTotalAndCounts(email);
+    }
 
-    //Todo Kurumsal kullanıcı aynı sefer için 20 bilet alabilir
+    @PostMapping("buy/{email}/{tripId}")
+    public ResponseEntity<List<TicketDto>> buyTickets(@RequestBody List<TicketDto> ticketDtos,@PathVariable String email,@PathVariable Long tripId){
+        return ticketService.buyTickets(ticketDtos,email,tripId);
+    }
 
 
-    //todo bilet alınınca telefona mesaj gönder asenkron
+
+
 
 
 

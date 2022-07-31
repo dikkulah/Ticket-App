@@ -6,9 +6,12 @@ import com.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -17,22 +20,19 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final ModelMapper modelMapper;
 
-    public PaymentDto createPayment(PaymentDto request) {
+    public ResponseEntity<PaymentDto> createPayment(PaymentDto request) {
         log.info("Ödeme servisine ulaştı");
         paymentRepository.save(modelMapper.map(request, Payment.class));
-        return request;
+        return ResponseEntity.ok().body(request);
     }
 
-    public List<PaymentDto> getPaymentByEmail(String email) {
+    public ResponseEntity<List<PaymentDto>> getPaymentByEmail(String email, Long tripId, Integer seatNo) {
         log.info("Ödeme görütnüleme servisine ulaştı");
-        return mapList(paymentRepository.findPaymentsByUserEmail(email), PaymentDto.class);
+        if (paymentRepository.findPaymentsByUserEmail(email).isEmpty())
+            return ResponseEntity.badRequest().body(new ArrayList<>());
+        else
+            return ResponseEntity.ok().body(paymentRepository.findPaymentsByUserEmail(email).stream().filter(payment -> Objects.equals(payment.getTripId(), tripId) && Objects.equals(payment.getSeatNo(), seatNo)).map(payment -> modelMapper.map(payment, PaymentDto.class)).toList());
     }
 
-    <S, T> List<T> mapList(List<S> source, Class<T> targetClass) {
-        return source
-                .stream()
-                .map(element -> modelMapper.map(element, targetClass))
-                .toList();
-    }
 }
 

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@Document(value = "mails")
+@Document(value = "sms")
 @Getter
 @Setter
 public class Sms extends Notification implements Serializable {
@@ -20,11 +20,6 @@ public class Sms extends Notification implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 }
+
+

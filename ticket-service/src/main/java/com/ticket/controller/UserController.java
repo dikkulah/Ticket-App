@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -17,23 +18,48 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
+    /**
+     * @param request Userın bilgilerini alır
+     *                Şifreyi hashleyerek kaydeder.
+     * @return Kaydederken oluşan duruma göre String döndürür.
+     */
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody UserDto request){
+    public ResponseEntity<String> register(@RequestBody UserDto request) {
         return userService.register(request);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<List<TicketDto>> getTicketsByUserId(@PathVariable Long id){
+    /**
+     * Sahte bir login işlemi yapar. Önce email in kayıtlı olup olmadığını daha sonra göderilern şifre hashleyerek
+     * databaseden gelen şifre ile eşleştirerek işlemin başarısına göre string döndürür.
+     * @param email user email
+     * @param password şifre
+     * @return işlem sonucu
+     */
+    @PostMapping("{email}/{password}")
+    public ResponseEntity<String> login(@PathVariable String email, @PathVariable String password) {
+        return userService.login(email, password);
+    }
+
+    /**
+     * @param id userid
+     * @return Kullanıncının aldığı biletleri listeler
+     */
+    @GetMapping("tickets/{id}")
+    public ResponseEntity<List<TicketDto>> getTicketsByUserId(@PathVariable Long id) {
         return userService.getTicketsByUserId(id);
     }
 
-    @PostMapping("{email}/{password}")
-    public ResponseEntity<String> login(@PathVariable String email,@PathVariable String password){
-        return userService.login(email,password);
+    @GetMapping("{email}")
+    public ResponseEntity<UserDto> getByUserEmail(@PathVariable String email) {
+        log.info(LocalDateTime.parse("2017-01-13 17:09").toString());
+
+        return userService.getByUserEmail(email);
+    }
+    @DeleteMapping("{email}")
+    public ResponseEntity<String> deleteByUserEmail(@PathVariable String email) {
+        return userService.deleteByUserEmail(email);
     }
 
-
-    //todo login
 
 
 }

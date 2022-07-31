@@ -1,5 +1,5 @@
 package com.ticket.model.enums;
 
-public enum RoleType {
+public enum Role {
     ADMIN,USER
 }

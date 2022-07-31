@@ -1,6 +1,7 @@
 package com.ticket.model;
 
-import com.ticket.model.enums.RoleType;
+import com.ticket.model.enums.Role;
+;
 import com.ticket.model.enums.UserType;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,6 @@ public class User {
     private UserType userType;
     @Enumerated(EnumType.STRING)
     @Column(length = 15)
-    private RoleType roleType;
+    private Role role;
 
 }

@@ -1,5 +1,8 @@
 package com.ticket.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.ticket.model.User;
+import com.ticket.model.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,5 +18,7 @@ public class TicketDto implements Serializable {
     private Integer seatNo;
     private BigDecimal ticketPrice;
     private TripDto trip;
-    private PassengerDto passenger;
+    private String fullName;
+    private Gender gender;
+    private PaymentDto payment;
 }

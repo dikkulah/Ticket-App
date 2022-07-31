@@ -1,5 +1,5 @@
 package com.ticket.model.enums;
 
-public enum VehicleType {
+public enum Vehicle {
     PLANE,BUS
 }

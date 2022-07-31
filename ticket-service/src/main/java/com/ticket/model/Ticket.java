@@ -1,5 +1,6 @@
 package com.ticket.model;
 
+import com.ticket.model.enums.Gender;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +18,9 @@ public class Ticket {
     private Long id;
     private Integer seatNo;
     private BigDecimal ticketPrice;
-
+    private String fullName;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false, updatable = false)
     private Trip trip;
@@ -25,8 +28,5 @@ public class Ticket {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "passenger_id", nullable = false)
-    private Passenger passenger;
 
 }
