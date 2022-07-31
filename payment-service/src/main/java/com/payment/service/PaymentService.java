@@ -20,19 +20,21 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final ModelMapper modelMapper;
 
-    public ResponseEntity<PaymentDto> createPayment(PaymentDto request) {
+    public ResponseEntity<PaymentDto> createOrSavePayment(PaymentDto request) {
         log.info("Ödeme servisine ulaştı");
         paymentRepository.save(modelMapper.map(request, Payment.class));
         return ResponseEntity.ok().body(request);
     }
 
-    public ResponseEntity<List<PaymentDto>> getPaymentByEmail(String email, Long tripId, Integer seatNo) {
-        log.info("Ödeme görütnüleme servisine ulaştı");
-        if (paymentRepository.findPaymentsByUserEmail(email).isEmpty())
-            return ResponseEntity.badRequest().body(new ArrayList<>());
-        else
-            return ResponseEntity.ok().body(paymentRepository.findPaymentsByUserEmail(email).stream().filter(payment -> Objects.equals(payment.getTripId(), tripId) && Objects.equals(payment.getSeatNo(), seatNo)).map(payment -> modelMapper.map(payment, PaymentDto.class)).toList());
+
+    public ResponseEntity<PaymentDto> getPaymentOfTicket(String email, Long tripId, Integer seatNo) {
+        return ResponseEntity.ok().body(modelMapper.map(paymentRepository.findPaymentByUserEmailAndTripIdAndSeatNo(email, tripId, seatNo),PaymentDto.class));
+
     }
 
+    public ResponseEntity<List<PaymentDto>> getPaymentOfTripByEmailAndTripId(String email, Long tripId) {
+        return ResponseEntity.ok().body(paymentRepository.findPaymentsByUserEmailAndTripId(email, tripId)
+                .stream().map(payment -> modelMapper.map(payment,PaymentDto.class)).toList());
+    }
 }
 

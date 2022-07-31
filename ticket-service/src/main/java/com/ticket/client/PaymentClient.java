@@ -10,11 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(value = "payment-service",url = "http://localhost:8082/payment")
+@FeignClient(value = "payment-service", url = "http://localhost:8082/payment")
 public interface PaymentClient {
     @PostMapping
-    ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto request);
-    @GetMapping("{email}")
-    ResponseEntity<List<PaymentDto>> getPaymentByEmail(@PathVariable String email);
+    ResponseEntity<PaymentDto> createOrSavePayment(@RequestBody PaymentDto request);
+
+    @GetMapping("{email}/{tripId}")
+    ResponseEntity<List<PaymentDto>> getPaymentOfTripByEmailAndTripId(@PathVariable String email, @PathVariable Long tripId);
+
+    @GetMapping("{email}/{tripId}/{seatNo}")
+    ResponseEntity<PaymentDto> getPaymentOfTicket(@PathVariable String email, @PathVariable Long tripId, @PathVariable Integer seatNo);
 
 }

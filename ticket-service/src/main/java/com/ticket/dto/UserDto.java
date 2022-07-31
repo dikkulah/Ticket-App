@@ -1,6 +1,5 @@
 package com.ticket.dto;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ticket.model.enums.Role;
 import com.ticket.model.enums.UserType;
 import lombok.AllArgsConstructor;

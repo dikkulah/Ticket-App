@@ -17,16 +17,21 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    ResponseEntity<PaymentDto> createPayment(@RequestBody PaymentDto request){
+    ResponseEntity<PaymentDto> createOrSavePayment(@RequestBody PaymentDto request){
         log.info("Ödeme oluşturma controllorına ulaştı.");
-        return paymentService.createPayment(request);
+        return paymentService.createOrSavePayment(request);
     }
 
 
-    @GetMapping("{email}/{tripId}/{seatNo}")
-    ResponseEntity<List<PaymentDto>> getPayment(@PathVariable String email,@PathVariable Long tripId,@PathVariable Integer seatNo){
+    @GetMapping("{email}/{tripId}")
+    ResponseEntity<List<PaymentDto>> getPaymentOfTripByEmailAndTripId(@PathVariable String email,@PathVariable Long tripId){
         log.info("Ödeme görüntüleme controllorına ulaştı.");
-        return paymentService.getPaymentByEmail(email,tripId,seatNo);
+        return paymentService.getPaymentOfTripByEmailAndTripId(email,tripId);
+    }
+    @GetMapping("{email}/{tripId}/{seatNo}")
+    ResponseEntity<PaymentDto> getPaymentOfTicket(@PathVariable String email,@PathVariable Long tripId,@PathVariable Integer seatNo){
+        log.info("Ödeme görüntüleme controllorına ulaştı.");
+        return paymentService.getPaymentOfTicket(email,tripId,seatNo);
     }
 
 

@@ -20,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -59,13 +58,21 @@ public class TripService {
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bu maile kayıtlı bir kullanıcı yok."));
         if (user.getRole() == Role.ADMIN) {
             tripRepository.findById(tripId).ifPresent(trip -> {
-                trip.setIsCanceled(Boolean.TRUE);
-                trip.getTickets().forEach(ticket -> {
-                    //todo burayı düşün
-                    List<PaymentDto> paymentDtoList = Objects.requireNonNull(paymentClient.getPaymentByEmail(ticket.getUser().getEmail()).getBody());
-                    paymentDtoList.forEach(paymentDto -> paymentDto.setIsCanceled(Boolean.TRUE));
-                });
-            });
+                        trip.setIsCanceled(Boolean.TRUE);
+                        trip.getTickets().forEach(ticket -> {
+
+                            List<PaymentDto> paymentDtoList = paymentClient.getPaymentOfTripByEmailAndTripId(email, tripId).getBody();
+                            if (paymentDtoList != null) {
+                                paymentDtoList.forEach(paymentDto -> {
+                                    paymentDto.setIsCanceled(Boolean.TRUE);
+                                    paymentClient.createOrSavePayment(paymentDto);
+                                });
+                            } else ResponseEntity.badRequest().body("Bu seferden hiç bilet satın alınmamış.");
+                        });
+                        tripRepository.save(trip);
+                    }
+            );
+
         } else if (user.getRole() != Role.ADMIN)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Yetkiniz dahilinde değil.");
         return ResponseEntity.ok().body(tripId + " numaralı sefer iptal edildi.Ve biletlerin ödemeleri geri ödenecek şeklinde işaretlendi.");

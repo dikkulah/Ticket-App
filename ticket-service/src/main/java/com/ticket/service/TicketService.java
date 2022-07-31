@@ -1,7 +1,9 @@
 package com.ticket.service;
 
 import com.ticket.client.PaymentClient;
-import com.ticket.dto.*;
+import com.ticket.dto.NotificationDto;
+import com.ticket.dto.SmsDto;
+import com.ticket.dto.TicketDto;
 import com.ticket.model.Ticket;
 import com.ticket.model.Trip;
 import com.ticket.model.User;
@@ -70,12 +72,11 @@ public class TicketService {
         } else if (user.getUserType() == UserType.INDIVIDUAL && boughtAndWillBeCount >= 5) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bireysel kullanıcılar bir seferden 5 den fazla bilet alamazlar.");
         } else
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "https://www.youtube.com/watch?v=ncLtGldfIbM&ab_channel=AhmetKemal");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "https://youtu.be/ncLtGldfIbM");
     }
 
     private ResponseEntity<List<TicketDto>> saveAndResponse(List<TicketDto> ticketDtos, User user, Trip trip, List<TicketDto> purchased, Long tripId) {
         ticketDtos.forEach(ticketDto -> {
-//
             if (!trip.getPurchasedSeats().contains(ticketDto.getSeatNo())) {
                 if (ticketDto.getSeatNo() <= trip.getSeatCapacity()) {
                     trip.getPurchasedSeats().add(ticketDto.getSeatNo());
@@ -85,16 +86,18 @@ public class TicketService {
                     paymentDto.setAmount(ticketDto.getTicketPrice());
                     paymentDto.setSeatNo(ticketDto.getSeatNo());
                     paymentDto.setTripId(tripId);
-                    PaymentDto savedDto = paymentClient.createPayment(paymentDto).getBody();
+                    paymentClient.createOrSavePayment(paymentDto).getBody();
                     var ticket= modelMapper.map(ticketDto, Ticket.class);
                     ticket.setTrip(trip);
                     ticket.setUser(user);
                     TicketDto ticketDto1 = modelMapper.map(ticketRepository.save(ticket), TicketDto.class);
-                    ticketDto1.setPayment(savedDto);
+                    ticketDto1.setPayment(paymentClient.getPaymentOfTicket(user.getEmail(), tripId, ticketDto.getSeatNo()).getBody());
                     purchased.add(ticketDto1);
+
                     NotificationDto notificationDto = new SmsDto(trip.getId() + " numaralı seferden "
                             + ticketDto.getSeatNo() + " numaralı koltuk satın almıştır "
                             + "Kalkış saati: " + trip.getDepartureTime().toString(), user.getPhoneNumber());
+
                     amqpTemplate.convertAndSend(notificationDto);
                 } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bu koltuk numarası mevcut değil.");
             } else {

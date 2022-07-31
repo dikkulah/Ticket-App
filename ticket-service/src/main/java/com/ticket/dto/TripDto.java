@@ -1,7 +1,6 @@
 package com.ticket.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.ticket.model.User;
+
 import com.ticket.model.enums.Station;
 import com.ticket.model.enums.Vehicle;
 import lombok.Data;
