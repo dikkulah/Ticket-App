@@ -22,8 +22,8 @@ public class PaymentService {
 
     public ResponseEntity<PaymentDto> createOrSavePayment(PaymentDto request) {
         log.info("Ödeme servisine ulaştı");
-        paymentRepository.save(modelMapper.map(request, Payment.class));
-        return ResponseEntity.ok().body(request);
+
+        return ResponseEntity.ok().body(modelMapper.map(paymentRepository.save(modelMapper.map(request, Payment.class)),PaymentDto.class));
     }
 
 
@@ -32,8 +32,8 @@ public class PaymentService {
 
     }
 
-    public ResponseEntity<List<PaymentDto>> getPaymentOfTripByEmailAndTripId(String email, Long tripId) {
-        return ResponseEntity.ok().body(paymentRepository.findPaymentsByUserEmailAndTripId(email, tripId)
+    public ResponseEntity<List<PaymentDto>> getPaymentOfTripByEmailAndTripId(Long tripId) {
+        return ResponseEntity.ok().body(paymentRepository.findPaymentsByTripId(tripId)
                 .stream().map(payment -> modelMapper.map(payment,PaymentDto.class)).toList());
     }
 }

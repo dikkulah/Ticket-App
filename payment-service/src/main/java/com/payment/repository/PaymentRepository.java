@@ -8,5 +8,5 @@ import java.util.List;
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
 
     Payment findPaymentByUserEmailAndTripIdAndSeatNo(String userEmail, Long tripId, Integer seatNo);
-    List<Payment> findPaymentsByUserEmailAndTripId(String userEmail, Long tripId);
+    List<Payment> findPaymentsByTripId(Long tripId);
 }

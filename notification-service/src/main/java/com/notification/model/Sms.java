@@ -1,25 +1,28 @@
 package com.notification.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
 
-@Document(value = "sms")
-@Getter
-@Setter
-public class Sms extends Notification implements Serializable {
-    private String phoneNumber;
+@Document("sms")
+@AllArgsConstructor@Slf4j
+@Data
+public class Sms  {
+    @Id
+    private String id;
+    private String to;
+    private String from;
+    private String text;
+    private LocalDateTime sendingTime;
 
-    public Sms() {
+    public Sms(String to, String from, String text, LocalDateTime sendingTime) {
+        this.to = to;
+        this.from = from;
+        this.text = text;
+        this.sendingTime = sendingTime;
     }
-
-    public Sms(String text, String phoneNumber) {
-        super(text);
-        this.phoneNumber = phoneNumber;
-    }
-
 }
-
-

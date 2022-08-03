@@ -2,8 +2,10 @@ package com.payment.dto;
 
 import com.payment.dto.enums.Currency;
 import com.payment.dto.enums.PaymentType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,7 +14,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PaymentDto implements Serializable {
     private Long id;
     private String userEmail;
