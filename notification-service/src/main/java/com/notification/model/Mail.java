@@ -1,5 +1,6 @@
 package com.notification.model;
 
+import com.notification.model.enums.NotificationType;
 import com.notification.repository.MailRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,4 +31,6 @@ public class Mail  {
         this.text = text;
         this.sendingTime = sendingTime;
     }
+
+
 }

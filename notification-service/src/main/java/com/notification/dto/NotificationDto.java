@@ -1,5 +1,6 @@
 package com.notification.dto;
 
+import com.notification.model.enums.NotificationType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

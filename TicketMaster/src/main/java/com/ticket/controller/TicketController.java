@@ -21,6 +21,10 @@ public class TicketController {
     public ResponseEntity<List<TicketDto>> buyTickets(@RequestBody List<TicketDto> ticketDtos, @PathVariable String userEmail, @PathVariable Long tripId){
         return ticketService.buyTickets(ticketDtos, userEmail,tripId);
     }
+    @GetMapping("{userEmail}")
+    public ResponseEntity<List<TicketDto>> getTicketsByUserEmail(@PathVariable String userEmail){
+        return ticketService.getTicketsByUserEmail(userEmail);
+    }
 
 
 

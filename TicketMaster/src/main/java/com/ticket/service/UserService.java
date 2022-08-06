@@ -31,37 +31,36 @@ public class UserService {
     private final RabbitTemplate rabbitTemplate;
 
     public ResponseEntity<String> register(UserDto request) {
-        userRepository.findUserByEmail(request.getEmail()).ifPresent(user -> {throw new MailAlreadyInUseException();});
-
-        request.setPassword(Hashing.sha256().hashString(request.getPassword(), StandardCharsets.UTF_8).toString());
-        userRepository.save(modelMapper.map(request, User.class));
-
-        NotificationDto notificationDto = new NotificationDto(NotificationType.EMAIL, "Ticket Master", request.getEmail(), "service@ticketmaster.com", "Kaydınız başarı ile gerçekleşti", LocalDateTime.now().toString());
-        rabbitTemplate.convertAndSend("ticketMaster", "ticketMaster", notificationDto);
-
-        return ResponseEntity.ok().body(request.getEmail() + " mailli kullanıcı başarı ile kayıt edildi");
+        if (userRepository.findUserByEmail(request.getEmail()).isPresent())
+            throw new MailAlreadyInUseException();
+        else {
+            request.setPassword(Hashing.sha256().hashString(request.getPassword(), StandardCharsets.UTF_8).toString());
+            userRepository.save(modelMapper.map(request, User.class));
+            rabbitTemplate.convertAndSend("ticketMaster", "ticketMaster", new NotificationDto(NotificationType.EMAIL,
+                    "Ticket Master",
+                    request.getEmail(),
+                    "service@ticketmaster.com",
+                    "Kaydınız başarı ile gerçekleşti",
+                    LocalDateTime.now().toString()));
+            return ResponseEntity.ok().body(request.getEmail() + " mailli kullanıcı başarı ile kayıt edildi");
+        }
     }
-
     public ResponseEntity<String> login(String email, String password) {
         User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
         if (Objects.equals(user.getPassword(), Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString())) {
             return ResponseEntity.ok().body("Oturum başarıyla açıldı.");
         }else throw new WrongPasswordException();
     }
-
     public ResponseEntity<List<TicketDto>> getTicketsByUserId(Long id) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        return ResponseEntity.ok().body(
-                user
+        return ResponseEntity.ok().body(user
                 .getTickets().stream()
                 .map(ticket -> modelMapper.map(ticket, TicketDto.class)).toList());
     }
-
     public ResponseEntity<UserDto> getByUserEmail(String email) {
         User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
         return ResponseEntity.ok().body(modelMapper.map(user,UserDto.class));
     }
-
     public ResponseEntity<String> deleteByUserEmail(String email) {
         User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);

@@ -38,15 +38,7 @@ public class TripController {
     }
 
 
-//    @PostMapping("{email}")
-//    public ResponseEntity<TripDto> addTrip(@RequestBody TripDto request, @PathVariable String email) {
-//        return tripService.addTrip(request, email);
-//    }
-//
-//    @DeleteMapping("{tripId}")
-//    public ResponseEntity<String> cancelTrip(@PathVariable Long tripId, String email) {
-//        return tripService.cancelTrip(tripId, email);
-//    }
+
 
 
 }

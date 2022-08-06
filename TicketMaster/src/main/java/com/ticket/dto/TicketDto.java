@@ -1,7 +1,6 @@
 package com.ticket.dto;
 
 
-import com.ticket.model.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

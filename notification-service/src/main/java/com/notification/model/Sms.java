@@ -1,5 +1,6 @@
 package com.notification.model;
 
+import com.notification.model.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Document("sms")
 @AllArgsConstructor@Slf4j
 @Data
-public class Sms  {
+public class Sms {
     @Id
     private String id;
     private String to;
@@ -25,4 +26,6 @@ public class Sms  {
         this.text = text;
         this.sendingTime = sendingTime;
     }
+
+
 }

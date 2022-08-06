@@ -4,7 +4,6 @@ import com.ticket.dto.enums.NotificationType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.amqp.core.AmqpTemplate;
 
 import java.io.Serializable;
 
