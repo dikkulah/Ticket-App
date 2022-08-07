@@ -19,7 +19,7 @@ import com.ticket.repository.TripRepository;
 import com.ticket.repository.UserRepository;
 import com.ticket.service.strategy.ticket_strategy.CorporateStrategy;
 import com.ticket.service.strategy.ticket_strategy.IndividualStrategy;
-import lombok.Getter;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -34,7 +34,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Getter
+
 public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
@@ -101,7 +101,8 @@ public class TicketService {
                 throw new AlreadySoldSeatException(ticketDto.getSeatNo());
             }
         });
-        return ResponseEntity.ok().body(purchased.stream().map(ticket -> modelMapper.map(ticket, TicketDto.class)).toList());
+        List<TicketDto> returned = purchased.stream().map(ticket -> modelMapper.map(ticket, TicketDto.class)).toList();
+        return ResponseEntity.ok().body(returned);
     }
 
     private void sendSms(Trip trip, TicketDto ticketDto) {

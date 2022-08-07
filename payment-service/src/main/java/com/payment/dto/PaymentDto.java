@@ -3,7 +3,6 @@ package com.payment.dto;
 import com.payment.dto.enums.Currency;
 import com.payment.dto.enums.PaymentType;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -1,6 +1,5 @@
 package com.notification.model;
 
-import com.notification.model.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -28,4 +27,7 @@ public class Sms {
     }
 
 
+    public Sms() {
+
+    }
 }

@@ -1,12 +1,8 @@
 package com.notification.model;
 
-import com.notification.model.enums.NotificationType;
-import com.notification.repository.MailRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -33,4 +29,7 @@ public class Mail  {
     }
 
 
+    public Mail() {
+
+    }
 }

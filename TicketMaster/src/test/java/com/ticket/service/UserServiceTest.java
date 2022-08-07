@@ -2,6 +2,7 @@ package com.ticket.service;
 
 import com.google.common.hash.Hashing;
 import com.ticket.dto.NotificationDto;
+import com.ticket.dto.TicketDto;
 import com.ticket.dto.UserDto;
 import com.ticket.exception.MailAlreadyInUseException;
 import com.ticket.exception.UserNotFoundException;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,8 +67,8 @@ class UserServiceTest {
 
         when(userRepository.findUserByEmail(anyString())).thenReturn(Optional.of(mock(User.class))).thenThrow(MailAlreadyInUseException.class);
 
-        verify(rabbitTemplate, times(0)).convertAndSend(anyString(), anyString(), any(NotificationDto.class));
-        verify(userRepository, times(0)).save(any(User.class));
+        verify(rabbitTemplate,never()).convertAndSend(anyString(), anyString(), any(NotificationDto.class));
+        verify(userRepository, never()).save(any(User.class));
 
         assertThrows(MailAlreadyInUseException.class, () -> userService.register(request));
 

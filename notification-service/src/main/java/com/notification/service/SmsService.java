@@ -1,7 +1,6 @@
 package com.notification.service;
 
 import com.notification.dto.NotificationDto;
-import com.notification.model.Mail;
 import com.notification.model.Sms;
 import com.notification.repository.SmsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
