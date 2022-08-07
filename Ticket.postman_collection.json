@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "6e7d5d6e-94cb-46c4-8395-ce79f55f641e",
+		"name": "Ticket",
+		"description": "# Introduction\n\nBilet uygulması backen\n\n# Authentication\n\nSahte",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "18806477"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Register Admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"admin@admin.com\",\n    \"password\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8084/admin"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Trip(Only Admin Can Do) Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicle\":\"BUS\",\n    \"fromStation\":\"ISTANBUL\",\n    \"ticketPrice\":450,\n    \"toStation\":\"ANKARA\",\n    \"departureTime\":\"2017-01-13T17:09:40\",\n    \"arrivalTime\":\"2017-01-13T17:09:45\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:8084/admin/trip/admin@admin.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Trip ( Only Admin Can Do) Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:8084/admin/trip/3/admin@admin.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trip By Properties or all Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8084/admin/trips?arrivalTime=2017-01-13T17:09:42.411&departureTime=2017-01-13T17:09:42.411&vehicle=BUS&toStation=ISTANBUL&fromStation=ISTANBUL",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"admin",
+								"trips"
+							],
+							"query": [
+								{
+									"key": "arrivalTime",
+									"value": "2017-01-13T17:09:42.411"
+								},
+								{
+									"key": "departureTime",
+									"value": "2017-01-13T17:09:42.411"
+								},
+								{
+									"key": "vehicle",
+									"value": "BUS"
+								},
+								{
+									"key": "toStation",
+									"value": "ISTANBUL"
+								},
+								{
+									"key": "fromStation",
+									"value": "ISTANBUL"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Count And Sum Selled Tickets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:8084/admin/total/admin@admin.com"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "localhost:8084/admin/admin@admin.com/123456"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ticket Master",
+			"item": [
+				{
+					"name": "Ticket",
+					"item": [
+						{
+							"name": "Buy Ticket",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    {\n        \"seatNo\": 23,\n        \"passenger\": {\n            \"fullName\": \"Ufuk Dikkülah\",\n            \"gender\":\"MALE\",\n            \"phoneNumber\":\"05536633774\",\n            \"tcNo\":\"29048006492\"\n        },\n        \"payment\": {\n            \"paymentType\": \"EFT\",\n            \"iban\": \"TR123456789\",\n            \"currency\": \"TRY\"\n        }\n    }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "localhost:8080/ticket/buy/bireysel@user.com/4"
+							},
+							"response": []
+						},
+						{
+							"name": "Get my tickets",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:8080/ticket/bireysel@user.com"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Trip",
+					"item": [
+						{
+							"name": "Get Trip By Properties or all(aktif olanlar)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/trip/?arrivalTime=2017-01-13T17:09:42.411&departureTime=2017-01-13T17:09:42.411&vehicle=BUS&toStation=ISTANBUL&fromStation=ISTANBUL",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"trip",
+										""
+									],
+									"query": [
+										{
+											"key": "arrivalTime",
+											"value": "2017-01-13T17:09:42.411"
+										},
+										{
+											"key": "departureTime",
+											"value": "2017-01-13T17:09:42.411"
+										},
+										{
+											"key": "vehicle",
+											"value": "BUS"
+										},
+										{
+											"key": "toStation",
+											"value": "ISTANBUL"
+										},
+										{
+											"key": "fromStation",
+											"value": "ISTANBUL"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Trip By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:8080/trip/1"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"kurumsal1@user.com\",\n    \"password\":\"123456\",\n    \"userType\":\"CORPORATE\",\n    \"phoneNumber\": \"05536633774\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "localhost:8080/user"
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "localhost:8080/user/bireysel@user.com/123456"
+							},
+							"response": []
+						},
+						{
+							"name": "Get User by Email",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:8080/user/bireysel@user.com"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete User By Id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "localhost:8080/user/admin1@user.com"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
