@@ -64,7 +64,7 @@ public class AdminService {
 
     public ResponseEntity<String> getTotalAndCounts(String email) {
         adminRepository.findAdminByEmail(email).orElseThrow(UserNotFoundException::new);
-        long count = ticketRepository.count();
+        Long count = ticketRepository.count();
         return ResponseEntity.ok().body("Toplam bilet sayısı: " + count + "\n"
                 + "Topam gelir: " + ticketRepository.totalPrice());
 
