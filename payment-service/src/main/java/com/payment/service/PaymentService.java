@@ -9,9 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,20 +19,24 @@ public class PaymentService {
     private final ModelMapper modelMapper;
 
     public ResponseEntity<PaymentDto> createOrSavePayment(PaymentDto request) {
-        log.info("Ödeme servisine ulaştı");
+        log.info("payment service,createOrSavePayment ");
 
         return ResponseEntity.ok().body(modelMapper.map(paymentRepository.save(modelMapper.map(request, Payment.class)),PaymentDto.class));
     }
 
 
     public ResponseEntity<PaymentDto> getPaymentOfTicket(String email, Long tripId, Integer seatNo) {
-        return ResponseEntity.ok().body(modelMapper.map(paymentRepository.findPaymentByUserEmailAndTripIdAndSeatNo(email, tripId, seatNo),PaymentDto.class));
+        log.info("payment service,getPaymentOfTicket ");
+
+        return ResponseEntity.ok().body(modelMapper.map(paymentRepository.findPaymentByUserEmailAndTripIdAndSeatNo(email, tripId, seatNo), PaymentDto.class));
 
     }
 
     public ResponseEntity<List<PaymentDto>> getPaymentOfTripByEmailAndTripId(Long tripId) {
+        log.info("payment service,getPaymentOfTripByEmailAndTripId ");
+
         return ResponseEntity.ok().body(paymentRepository.findPaymentsByTripId(tripId)
-                .stream().map(payment -> modelMapper.map(payment,PaymentDto.class)).toList());
+                .stream().map(payment -> modelMapper.map(payment, PaymentDto.class)).toList());
     }
 }
 

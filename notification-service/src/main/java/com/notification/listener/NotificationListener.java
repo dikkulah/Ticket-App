@@ -5,9 +5,7 @@ import com.notification.dto.NotificationDto;
 import com.notification.model.enums.NotificationType;
 import com.notification.service.MailService;
 import com.notification.service.SmsService;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ public class NotificationListener {
 
     @RabbitListener(queues = "ticketMaster")
     public void handleNotification(NotificationDto dto) {
+        log.info("notification listener");
         if (dto.getType() == NotificationType.EMAIL) mailService.send(dto);
         else if (dto.getType() == NotificationType.SMS) smsService.send(dto);
         else throw new IllegalArgumentException("Böyle bir mesaj tipi yok");

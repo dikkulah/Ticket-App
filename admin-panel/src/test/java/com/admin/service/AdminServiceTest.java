@@ -36,7 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.never;
 
 @SpringBootTest
 class AdminServiceTest {
@@ -185,9 +184,7 @@ class AdminServiceTest {
 
     }
 
-    @Test
-    void cancelTrip_and_no_tickets_sold() {
-    }
+
 
     @Test
     void cancelTrip() {

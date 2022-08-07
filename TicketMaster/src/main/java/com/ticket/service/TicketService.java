@@ -19,7 +19,6 @@ import com.ticket.repository.TripRepository;
 import com.ticket.repository.UserRepository;
 import com.ticket.service.strategy.ticket_strategy.CorporateStrategy;
 import com.ticket.service.strategy.ticket_strategy.IndividualStrategy;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -46,6 +45,7 @@ public class TicketService {
 
 
     public ResponseEntity<List<TicketDto>> buyTickets(List<TicketDto> ticketDtos, String userEmail, Long tripId) {
+        log.info("ticket service, buyTickets");
         User user = userRepository.findUserByEmail(userEmail).orElseThrow(UserNotFoundException::new);
         Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
         List<Ticket> boughtTickets = trip.getTickets().stream().filter(ticket -> ticket.getUser() == user).toList();
@@ -60,12 +60,16 @@ public class TicketService {
 
 
     public ResponseEntity<List<TicketDto>> getTicketsByUserEmail(String userEmail) {
+        log.info("ticket service, getTicketsByUserEmail");
+
         var tickets = ticketRepository.findTicketsByUser(userRepository.findUserByEmail(userEmail).orElseThrow(UserNotFoundException::new));
         return ResponseEntity.ok().body(tickets.stream().map(ticket -> modelMapper.map(ticket, TicketDto.class)).toList());
     }
 
 
     ResponseEntity<List<TicketDto>> saveAndResponse(List<TicketDto> ticketDtos, User user, Trip trip, Long tripId) {
+        log.info("ticket service, saveAndResponse");
+
         List<TicketDto> purchased = new ArrayList<>();
         ticketDtos.forEach(ticketDto -> {
             if (!trip.getPurchasedSeats().contains(ticketDto.getSeatNo())) {
@@ -106,6 +110,8 @@ public class TicketService {
     }
 
     private void sendSms(Trip trip, TicketDto ticketDto) {
+        log.info("sms gönderildi");
+
         rabbitTemplate.convertAndSend("ticketMaster", "ticketMaster",
                 NotificationDto.builder()
                         .sendingTime(LocalDateTime.now().toString())

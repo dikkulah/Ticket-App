@@ -4,6 +4,7 @@ package com.ticket.service.strategy.ticket_strategy;
 import com.ticket.dto.TicketDto;
 import com.ticket.exception.TicketBuyCondidationsException;
 import com.ticket.model.enums.Gender;
+
 import java.util.List;
 
 public class IndividualStrategy implements TicketBuyStrategy{

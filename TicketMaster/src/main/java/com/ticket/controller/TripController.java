@@ -28,12 +28,13 @@ public class TripController {
             , @RequestParam(value = "from", required = false) Station from
             , @RequestParam(value = "arrivalTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrivalTime
             , @RequestParam(value = "departureTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime) {
-
+        log.info("trip controller, getTripByPropertiesOrAll");
         return tripService.getTripByPropertiesOrAll(vehicle, to, from, arrivalTime, departureTime);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<TripDto> getTripById(@PathVariable Long id){
+        log.info("trip controller, getTripById");
         return tripService.getTripById(id);
     }
 

@@ -25,6 +25,7 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<String> register(@RequestBody UserDto request) {
+        log.info("user service , register");
         return userService.register(request);
     }
 
@@ -37,6 +38,7 @@ public class UserController {
      */
     @PostMapping("{email}/{password}")
     public ResponseEntity<String> login(@PathVariable String email, @PathVariable String password) {
+        log.info("user service , login");
         return userService.login(email, password);
     }
 
@@ -46,17 +48,20 @@ public class UserController {
      */
     @GetMapping("tickets/{id}")
     public ResponseEntity<List<TicketDto>> getTicketsByUserId(@PathVariable Long id) {
+        log.info("user service , getTicketsByUserId");
         return userService.getTicketsByUserId(id);
     }
 
     @GetMapping("{email}")
     public ResponseEntity<UserDto> getByUserEmail(@PathVariable String email) {
+        log.info("user service , getByUserEmail");
         log.info(LocalDateTime.parse("2017-01-13 17:09").toString());
 
         return userService.getByUserEmail(email);
     }
     @DeleteMapping("{email}")
     public ResponseEntity<String> deleteByUserEmail(@PathVariable String email) {
+        log.info("user service , deleteByUserEmail");
         return userService.deleteByUserEmail(email);
     }
 

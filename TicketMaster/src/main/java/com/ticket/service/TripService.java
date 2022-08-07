@@ -24,12 +24,14 @@ public class TripService {
     private final ModelMapper modelMapper;
 
     public ResponseEntity<List<TripDto>> getTripByPropertiesOrAll(Vehicle vehicle, Station to, Station from, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+        log.info("trip service, getTripByPropertiesOrAll");
         List<Trip> trips = tripRepository.findActiveTripsByProperties(arrivalTime, departureTime, vehicle, to, from);
         return ResponseEntity.ok().body(trips.stream().map(trip -> modelMapper.map(trip, TripDto.class)).toList());
     }
 
 
     public ResponseEntity<TripDto> getTripById(Long id) {
+        log.info("trip service, getTripById");
         Trip trip = tripRepository.findById(id).orElseThrow(TripNotFoundException::new);
         return ResponseEntity.ok().body(modelMapper.map(trip, TripDto.class));
     }

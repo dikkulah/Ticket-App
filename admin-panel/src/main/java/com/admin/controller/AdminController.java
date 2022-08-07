@@ -27,19 +27,23 @@ public class AdminController {
 
     @PostMapping("/{email}/{password}")
     public ResponseEntity<String> loginAdmin(@PathVariable String email, @PathVariable String password){
+        log.info("admin conroller : login admin");
         return adminService.login(email,password);
     }
 
     @PostMapping("trip/{email}")
     public ResponseEntity<TripDto> addTrip(@RequestBody TripDto tripDto,@PathVariable String email){
+        log.info("admin conroller : add trip");
         return adminService.addTrip(tripDto,email);
     }
     @DeleteMapping("trip/{tripId}/{email}")
     public ResponseEntity<String> cancelTrip(@PathVariable Long tripId,@PathVariable String email){
+        log.info("admin conroller : cancel trip");
         return adminService.cancelTrip(tripId,email);
     }
     @GetMapping("total/{email}")
     public ResponseEntity<String> getTotalAndCounts(@PathVariable String email){
+        log.info("admin conroller : get total and counts");
         return adminService.getTotalAndCounts(email);
     }
     @GetMapping("trips")
@@ -48,6 +52,7 @@ public class AdminController {
             , @RequestParam(value = "from", required = false) Station from
             , @RequestParam(value = "arrivalTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime arrivalTime
             , @RequestParam(value = "departureTime", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureTime) {
+        log.info("admin conroller : get trip by properties");
         return adminService.getTripByPropertiesOrAll(vehicle, to, from, arrivalTime, departureTime);
     }
 

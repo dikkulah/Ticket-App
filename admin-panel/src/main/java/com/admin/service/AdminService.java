@@ -39,6 +39,7 @@ public class AdminService {
     private final PaymentClient paymentClient;
 
     public ResponseEntity<String> register(AdminDto adminDto) {
+        log.info("admin service, register");
         adminRepository.findAdminByEmail(adminDto.getEmail()).ifPresent(admin -> {
             throw new MailAlreadyInUseException();
         });
@@ -48,6 +49,7 @@ public class AdminService {
     }
 
     public ResponseEntity<String> login(String email, String password) {
+        log.info("admin service login");
         Admin admin = adminRepository.findAdminByEmail(email).orElseThrow(UserNotFoundException::new);
         if (Objects.equals(admin.getPassword(), Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString())) {
             return ResponseEntity.ok().body("Oturum başarıyla açıldı.");
@@ -55,6 +57,7 @@ public class AdminService {
     }
 
     public ResponseEntity<TripDto> addTrip(TripDto request, String email) {
+        log.info("admin service, add trip");
         adminRepository.findAdminByEmail(email).orElseThrow(UserNotFoundException::new);
         Trip trip = modelMapper.map(request, Trip.class);
         if (request.getVehicle() == Vehicle.BUS) trip.setSeatCapacity(45);
@@ -63,6 +66,7 @@ public class AdminService {
     }
 
     public ResponseEntity<String> getTotalAndCounts(String email) {
+        log.info("admin service, get total and counts");
         adminRepository.findAdminByEmail(email).orElseThrow(UserNotFoundException::new);
         Long count = ticketRepository.count();
         return ResponseEntity.ok().body("Toplam bilet sayısı: " + count + "\n"
@@ -72,17 +76,19 @@ public class AdminService {
 
     public ResponseEntity<List<TripDto>> getTripByPropertiesOrAll(Vehicle vehicle, Station to, Station
             from, LocalDateTime arrivalTime, LocalDateTime departureTime) {
+        log.info("admin service, get trips by properties");
         List<Trip> trips = tripRepository.findTripsByProperties(arrivalTime, departureTime, vehicle, to, from);
         return ResponseEntity.ok().body(trips.stream().map(trip -> modelMapper.map(trip, TripDto.class)).toList());
     }
 
     public ResponseEntity<String> cancelTrip(Long tripId, String email) {
+        log.info("admin service, cancelTrip");
         adminRepository.findAdminByEmail(email).orElseThrow(UserNotFoundException::new);
         Trip trip = tripRepository.findById(tripId).orElseThrow();
         trip.setIsCanceled(Boolean.TRUE);
         tripRepository.save(trip);
         if (trip.getTickets().isEmpty()) {
-            log.info("hiç biley yok.");
+            log.info("hiç bilet yok.");
             return ResponseEntity.badRequest().body("Sefer iptal edildi,seferden hiç bilet satın alınmamış.");
         } else {
             trip.getTickets().forEach(ticket -> {

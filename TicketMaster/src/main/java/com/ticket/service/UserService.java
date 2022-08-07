@@ -31,6 +31,7 @@ public class UserService {
     private final RabbitTemplate rabbitTemplate;
 
     public ResponseEntity<String> register(UserDto request) {
+        log.info("user service, register");
         if (userRepository.findUserByEmail(request.getEmail()).isPresent())
             throw new MailAlreadyInUseException();
         else {
@@ -46,22 +47,26 @@ public class UserService {
         }
     }
     public ResponseEntity<String> login(String email, String password) {
+        log.info("user service, login");
         User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
         if (Objects.equals(user.getPassword(), Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString())) {
             return ResponseEntity.ok().body("Oturum başarıyla açıldı.");
         }else throw new WrongPasswordException();
     }
     public ResponseEntity<List<TicketDto>> getTicketsByUserId(Long id) {
+        log.info("user service, getTicketsByUserId");
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return ResponseEntity.ok().body(user
                 .getTickets().stream()
                 .map(ticket -> modelMapper.map(ticket, TicketDto.class)).toList());
     }
     public ResponseEntity<UserDto> getByUserEmail(String email) {
+        log.info("user service, getByUserEmail");
         User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
         return ResponseEntity.ok().body(modelMapper.map(user,UserDto.class));
     }
     public ResponseEntity<String> deleteByUserEmail(String email) {
+        log.info("user service, deleteByUserEmail");
         User user = userRepository.findUserByEmail(email).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
         return ResponseEntity.ok().body(email+" kullanıcısı başarıyla silindi");
